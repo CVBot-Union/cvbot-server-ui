@@ -1,0 +1,40 @@
+<h3>HTTP钩子(WebHook)管理</h3>
+<nz-alert *ngIf="alertText !== ''" nzBanner nzType="error" style="margin-bottom: 12px" [nzMessage]="alertText" nzCloseable></nz-alert>
+<nz-divider nzText="添加"></nz-divider>
+
+<div>
+  <nz-input-group nzCompact>
+    <label for="name">钩子名称</label>
+    <input type="text" id="name" nz-input placeholder="名称" [(ngModel)]="webhookName" [disabled]="isOkLoading">
+    <label for="webhook-url">上报地址</label>
+    <input type="text" id="webhook-url" nz-input placeholder="https://webhook.com" [(ngModel)]="webhookURL" [disabled]="isOkLoading">
+    <button nz-button style="float: right" [nzLoading]="isOkLoading" [disabled]="isOkLoading" (click)="createWebhook()">创建</button>
+  </nz-input-group>
+
+</div>
+
+<nz-divider nzText="管理"></nz-divider>
+
+<nz-skeleton [nzActive]="true" *ngIf="webhookList === null || isOkLoading" ></nz-skeleton>
+
+<nz-list nzBordered *ngIf="webhookList !== null">
+  <nz-list-item *ngFor="let webhook of webhookList">
+    <nz-list-item-meta [nzDescription]="'名称: ' + webhook.name">
+      <nz-list-item-meta-title>URL: <code>{{webhook.url}}</code></nz-list-item-meta-title>
+    </nz-list-item-meta>
+    <ul nz-list-item-actions>
+      <nz-list-item-action>
+          <button [disabled]="isOkLoading" nz-button (click)="showDeleteModal(webhook)" style="color: red"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</button>
+      </nz-list-item-action>
+    </ul>
+  </nz-list-item>
+</nz-list>
+
+<nz-modal
+  [(nzVisible)]="isModalVisible"
+  nzTitle="确认删除HTTP钩子"
+  (nzOnCancel)="dismissModal()"
+  (nzOnOk)="OkDeleteWebhook()"
+  [nzCancelDisabled]="isCancelDisabled"
+  [nzOkLoading]="isOkLoading"
+>{{modalText}}</nz-modal>
