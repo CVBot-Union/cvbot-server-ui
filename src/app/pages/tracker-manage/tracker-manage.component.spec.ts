@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TrackerManageComponent } from './tracker-manage.component';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('TrackerManageComponent', () => {
   let component: TrackerManageComponent;
@@ -8,7 +9,8 @@ describe('TrackerManageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TrackerManageComponent ]
+      declarations: [ TrackerManageComponent ],
+      imports: [ HttpClientTestingModule ]
     })
     .compileComponents();
   }));
