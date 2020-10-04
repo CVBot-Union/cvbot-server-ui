@@ -4,17 +4,19 @@ import { NZ_ICONS, NzIconModule } from 'ng-zorro-antd/icon';
 import {
   MenuFoldOutline,
   MenuUnfoldOutline,
-  FormOutline,
+  InfoCircleOutline,
   DashboardOutline,
   RetweetOutline,
   TwitterOutline,
   CloudUploadOutline,
   DeleteOutline,
+  ArrowLeftOutline,
   NodeExpandOutline
 } from '@ant-design/icons-angular/icons';
 
 const icons = [MenuFoldOutline, MenuUnfoldOutline,
-  CloudUploadOutline, DeleteOutline,
+  CloudUploadOutline, DeleteOutline, InfoCircleOutline,
+  ArrowLeftOutline,
   DashboardOutline, NodeExpandOutline, RetweetOutline, TwitterOutline];
 
 @NgModule({

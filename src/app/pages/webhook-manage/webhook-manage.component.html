@@ -15,20 +15,22 @@
 
 <nz-divider nzText="管理"></nz-divider>
 
-<nz-skeleton [nzActive]="true" *ngIf="webhookList === null || isOkLoading" ></nz-skeleton>
+<nz-skeleton [nzActive]="true" *ngIf="isOkLoading" ></nz-skeleton>
 
-<nz-list nzBordered *ngIf="webhookList !== null">
+<nz-list nzBordered *ngIf="!isOkLoading">
   <nz-list-item *ngFor="let webhook of webhookList">
     <nz-list-item-meta [nzDescription]="'名称: ' + webhook.name">
       <nz-list-item-meta-title>URL: <code>{{webhook.url}}</code></nz-list-item-meta-title>
     </nz-list-item-meta>
     <ul nz-list-item-actions>
       <nz-list-item-action>
-          <button [disabled]="isOkLoading" nz-button (click)="showDeleteModal(webhook)" style="color: red"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</button>
+          <button [disabled]="isOkLoading" nz-button (click)="showDeleteModal(webhook)" nzType="danger"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</button>
       </nz-list-item-action>
     </ul>
   </nz-list-item>
 </nz-list>
+
+<nz-empty *ngIf="!isOkLoading && webhookList.length === 0"></nz-empty>
 
 <nz-modal
   [(nzVisible)]="isModalVisible"

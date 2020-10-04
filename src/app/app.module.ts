@@ -27,6 +27,20 @@ import { RtgroupManageComponent } from './pages/rtgroup-manage/rtgroup-manage.co
 import { RtgroupUserManageComponent } from './pages/rtgroup-user-manage/rtgroup-user-manage.component';
 import {NzSkeletonModule} from 'ng-zorro-antd/skeleton';
 import {NzTagModule} from 'ng-zorro-antd/tag';
+import { TrackerDetailComponent } from './pages/tracker-detail/tracker-detail.component';
+import {NzPageHeaderModule} from 'ng-zorro-antd/page-header';
+import {NzResultModule} from 'ng-zorro-antd/result';
+import {NzDescriptionsModule} from 'ng-zorro-antd/descriptions';
+import {NzBadgeModule} from 'ng-zorro-antd/badge';
+import {NzAvatarModule} from 'ng-zorro-antd/avatar';
+import {NzGridModule} from 'ng-zorro-antd/grid';
+import {NzTypographyModule} from 'ng-zorro-antd/typography';
+import {NzFormModule} from 'ng-zorro-antd/form';
+import {NzSelectModule} from 'ng-zorro-antd/select';
+import {NzEmptyModule} from 'ng-zorro-antd/empty';
+import {NzSwitchModule} from 'ng-zorro-antd/switch';
+import {NzPopconfirmModule} from 'ng-zorro-antd/popconfirm';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 registerLocaleData(zh);
 
@@ -38,7 +52,9 @@ registerLocaleData(zh);
     WebhookHistoryComponent,
     TrackerManageComponent,
     RtgroupManageComponent,
-    RtgroupUserManageComponent
+    RtgroupUserManageComponent,
+    TrackerDetailComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +72,19 @@ registerLocaleData(zh);
     NzDividerModule,
     NzInputModule,
     NzSkeletonModule,
-    NzTagModule
+    NzTagModule,
+    NzPageHeaderModule,
+    NzResultModule,
+    NzDescriptionsModule,
+    NzBadgeModule,
+    NzAvatarModule,
+    NzGridModule,
+    NzTypographyModule,
+    NzFormModule,
+    NzSelectModule,
+    NzEmptyModule,
+    NzSwitchModule,
+    NzPopconfirmModule
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }, NzModalService],
   bootstrap: [AppComponent]

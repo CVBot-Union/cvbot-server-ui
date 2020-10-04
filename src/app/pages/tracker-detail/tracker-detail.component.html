@@ -1,0 +1,139 @@
+<nz-page-header class="site-page-header" (nzBack)="onBack()" nzBackIcon nzTitle="追踪用户详细" nzSubtitle="">
+</nz-page-header>
+<nz-alert *ngIf="alertText !== ''" nzBanner nzType="error" style="margin-bottom: 12px" [nzMessage]="alertText" nzCloseable></nz-alert>
+
+<nz-descriptions nzBordered *ngIf="!isDetailLoading && !isUserNotFound">
+  <nz-descriptions-item nzTitle="头像">
+    <nz-avatar nzShape="square" nzSize="large" nzIcon="user" [nzSrc]="getTwitterAvatar(trackerDetail.uid)"></nz-avatar>
+  </nz-descriptions-item>
+  <nz-descriptions-item nzTitle="Twitter名">
+    <span nz-typography>{{trackerDetail.displayName}}</span>
+  </nz-descriptions-item>
+  <nz-descriptions-item nzTitle="组内名">
+    <span nz-typography>{{trackerDetail.nickname}}</span>
+    <button nz-button nzType="default" nzShape="circle" (click)="onNicknameEdit()"><i nz-icon nzType="edit"></i></button>
+  </nz-descriptions-item>
+</nz-descriptions>
+
+<nz-divider></nz-divider>
+
+<div nz-row *ngIf="!isDetailLoading" nzAlign="top" [nzGutter]="8">
+  <div nz-col nzLg="12" nzSm="24">
+    <nz-list nzBordered nzHeader="所属转推组">
+      <nz-list-item *ngFor="let rtgroup of rtGroupDetails">
+        <nz-list-item-meta
+          [nzAvatar]="rtgroup.property.icon"
+        >
+        </nz-list-item-meta>
+        <span nz-typography>{{ rtgroup.name }}</span>
+        <ul nz-list-item-actions>
+          <nz-list-item-action>
+            <button nz-button
+                    nz-popconfirm
+                    nzType="danger"
+                    (nzOnConfirm)="onConfirmRemoveRTGroup(rtgroup._id)"
+                    [nzPopconfirmTitle]="'确认移除' + rtgroup.name + '吗?'" >
+              <i nz-icon nzType="delete" nzTheme="outline"></i>
+              删除</button>
+          </nz-list-item-action>
+        </ul>
+      </nz-list-item>
+      <nz-list-item *ngIf="rtGroupDetails.length === 0">
+        <nz-empty></nz-empty>
+      </nz-list-item>
+      <nz-list-footer>
+        <button nz-button (click)="onAddRTGroups()">添加推送组</button>
+      </nz-list-footer>
+    </nz-list>
+  </div>
+  <div nz-col nzLg="12" nzSm="24">
+    <nz-list nzBordered nzHeader="所属推送群">
+      <nz-list-item *ngFor="let qqGroupID of trackerDetail.qqGroups">
+        <span nz-typography>{{qqGroupID}}</span>
+        <ul nz-list-item-actions>
+          <nz-list-item-action>
+            <button nz-button
+                    nz-popconfirm
+                    nzType="danger"
+                    (nzOnConfirm)="onConfirmRemoveQQGroup(qqGroupID)"
+                    [nzPopconfirmTitle]="'确认移除群' + qqGroupID + '吗?'" >
+              <i nz-icon nzType="delete" nzTheme="outline"></i>
+              删除</button>
+          </nz-list-item-action>
+        </ul>
+      </nz-list-item>
+      <nz-list-item *ngIf="trackerDetail.qqGroups.length === 0 || trackerDetail.qqGroups === undefined">
+        <nz-empty></nz-empty>
+      </nz-list-item>
+      <nz-list-footer>
+        <button nz-button (click)="onAddQQGroups()">添加推送QQ群</button>
+      </nz-list-footer>
+    </nz-list>
+  </div>
+</div>
+
+<nz-result nzStatus="404" nzTitle="404" nzSubTitle="Tracker不存在" *ngIf="isUserNotFound">
+  <div nz-result-extra>
+    <button nz-button nzType="primary" (click)="onBack()">返回管理页</button>
+  </div>
+</nz-result>
+
+<nz-skeleton [nzActive]="true" *ngIf="trackerDetail === undefined || isDetailLoading" ></nz-skeleton>
+
+<nz-modal
+  [(nzVisible)]="isAddQQGroupModalVisible"
+  nzTitle="添加新QQ群"
+  (nzOnCancel)="dismissModal()"
+  (nzOnOk)="OkAddQQGroups()"
+  [nzCancelDisabled]="isCancelDisabled"
+  [nzOkLoading]="isOkLoading"
+>
+  <div nz-form>
+    <nz-form-item>
+      <nz-form-label>所属QQ推送群</nz-form-label>
+      <nz-form-control>
+        <nz-select nzMode="tags"
+                   [nzShowArrow]="false"
+                   nzPlaceHolder="输入Q群，按Enter键确认"
+                   [(ngModel)]="enteredQQGroups">
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</nz-modal>
+
+<nz-modal
+  [(nzVisible)]="isAddRTGroupModalVisible"
+  nzTitle="添加新转推组"
+  (nzOnCancel)="dismissModal()"
+  (nzOnOk)="OkAddRTGroups()"
+  [nzCancelDisabled]="isCancelDisabled"
+  [nzOkLoading]="isOkLoading"
+>
+  <div nz-form>
+    <nz-form-item>
+      <nz-form-label>所属转推组</nz-form-label>
+      <nz-form-control>
+        <nz-select
+          nzMode="multiple"
+          nzPlaceHolder="请选择"
+          [(ngModel)]="selectedRTGroups"
+        >
+          <nz-option *ngFor="let rtgroup of rtGroupLists" [nzLabel]="rtgroup.name" [nzValue]="rtgroup._id" ></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</nz-modal>
+
+<nz-modal
+  [(nzVisible)]="isChangeNicknameModalVisible"
+  nzTitle="修改昵称"
+  (nzOnCancel)="dismissModal()"
+  (nzOnOk)="OkNicknameEdit()"
+  [nzOkLoading]="isOkLoading"
+  [nzCancelDisabled]="isCancelDisabled"
+  *ngIf="!isDetailLoading"
+>
+  <input nz-input [(ngModel)]="newNickname">
+</nz-modal>

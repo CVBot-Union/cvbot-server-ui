@@ -1,9 +1,69 @@
 <h3>Twitter追踪管理</h3>
 <nz-alert *ngIf="alertText !== ''" nzBanner nzType="error" style="margin-bottom: 12px" [nzMessage]="alertText" nzCloseable></nz-alert>
 
-<nz-skeleton [nzActive]="true" *ngIf="trackerList === null || isOkLoading" ></nz-skeleton>
+<nz-divider nzText="添加"></nz-divider>
 
-<nz-list nzBordered *ngIf="trackerList !== null">
+<div nz-form *ngIf="!isOkLoading">
+  <div nz-row>
+    <nz-form-item nz-col nzLg="8" nzSm="24" nzGutter="8">
+      <nz-form-label>Twitter用户名</nz-form-label>
+      <nz-form-control>
+        <nz-input-group nzAddOnBefore="@" >
+          <input type="text" nz-input [(ngModel)]="twitterUsername" (ngModelChange)="onUsernameChange()" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-col nzLg="8" nzSm="24" nzGutter="8">
+      <nz-form-label>TwitterUID</nz-form-label>
+      <nz-form-control>
+        <input type="text" nz-input [(ngModel)]="twitterUID" [disabled]="true" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-col nzLg="8" nzSm="24" nzGutter="8">
+      <nz-form-label>组内名</nz-form-label>
+      <nz-form-control>
+        <input type="text" nz-input [(ngModel)]="groupNickname" />
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-row>
+    <nz-form-item nz-col nzSm="24" nzLg="12" nzGutter="8">
+      <nz-form-label>所属转推组</nz-form-label>
+      <nz-form-control>
+        <nz-select
+          nzMode="multiple"
+          nzPlaceHolder="请选择"
+          [(ngModel)]="selectedRTGroups"
+        >
+          <nz-option *ngFor="let rtgroup of rtgroupLists" [nzLabel]="rtgroup.name" [nzValue]="rtgroup._id" ></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-col nzSm="24" nzLg="12" nzGutter="8">
+      <nz-form-label>所属QQ推送群</nz-form-label>
+      <nz-form-control>
+        <nz-select nzMode="tags" nzPlaceHolder="输入Q群，按Enter键确认" [(ngModel)]="enteredQQGroups">
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <div>
+    <label for="saveGroupsFromLastTime">添加后存留QQ群和转推组选项: </label>
+    <nz-switch id="saveGroupsFromLastTime" [(ngModel)]="isSaveGroupSelect" [nzCheckedChildren]="checkedTemplate" [nzUnCheckedChildren]="unCheckedTemplate"></nz-switch>
+  </div>
+  <div style="float: right">
+    <button nz-button nzType="default" [disabled]="isLookupDisabled" (click)="onUIDLookup()">查询UID</button>
+    <button nz-button nzType="primary" [disabled]="isCreateDisabled" (click)="onNewTrackerCreate()">添加</button>
+  </div>
+
+</div>
+
+<nz-divider nzText="管理"></nz-divider>
+
+<nz-skeleton [nzActive]="true" *ngIf="isOkLoading" ></nz-skeleton>
+
+<nz-list nzBordered *ngIf="!isOkLoading">
   <nz-list-item *ngFor="let tracker of trackerList">
     <nz-list-item-meta
       [nzAvatar]="getTwitterAvatar(tracker.uid)"
@@ -14,8 +74,25 @@
     在组: {{tracker.groups.length}}, Q群推送: {{tracker.qqGroups.length}}
     <ul nz-list-item-actions>
       <nz-list-item-action>
-        <button [disabled]="isOkLoading" nz-button style="color: red"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</button>
+        <button [disabled]="isOkLoading" (click)="showDeleteModal(tracker)" nz-button nzType="danger"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</button>
+      </nz-list-item-action>
+      <nz-list-item-action>
+        <a [disabled]="isOkLoading" routerLink="/tracker/manage/detail/{{tracker.uid}}" nz-button nzType="primary"><i nz-icon nzType="info-circle" nzTheme="outline"></i>详细</a>
       </nz-list-item-action>
     </ul>
   </nz-list-item>
 </nz-list>
+
+<nz-empty *ngIf="trackerList.length === 0 && !isOkLoading"></nz-empty>
+
+<nz-modal
+  [(nzVisible)]="isModalVisible"
+  nzTitle="确认删除追踪用户"
+  (nzOnCancel)="dismissModal()"
+  (nzOnOk)="OkDeleteTracker()"
+  [nzCancelDisabled]="isCancelDisabled"
+  [nzOkLoading]="isOkLoading"
+>{{modalText}}</nz-modal>
+
+<ng-template #checkedTemplate><i nz-icon nzType="check"></i></ng-template>
+<ng-template #unCheckedTemplate><i nz-icon nzType="close"></i></ng-template>

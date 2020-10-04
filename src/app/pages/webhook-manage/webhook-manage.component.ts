@@ -1,7 +1,6 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {WebhookService} from '../../services/webhook.service';
 import {ResponseEntity} from '../../models/WebhookResponse';
-import {NzAlertComponent} from 'ng-zorro-antd/alert';
 
 @Component({
   selector: 'app-webhook-manage',
@@ -13,7 +12,7 @@ export class WebhookManageComponent implements OnInit {
     private webhookService: WebhookService
   ) { }
 
-  webhookList: ResponseEntity[] | ResponseEntity = [];
+  webhookList: ResponseEntity[] = [];
   alertText = '';
   isModalVisible = false;
   isOkLoading = false;
@@ -24,13 +23,18 @@ export class WebhookManageComponent implements OnInit {
   webhookName = '';
   webhookURL = '';
 
-  URLPattern = new RegExp(/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/);
+  URLPattern = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/);
 
   private fetchAllWebhooks = () => {
+    this.isOkLoading = true;
     this.webhookService.getAllWebhooks()
       .subscribe(res => {
-        this.webhookList = res.response;
+        this.isOkLoading = false;
+        if (Array.isArray(res.response)){
+          this.webhookList = res.response;
+        }
       }, error => {
+        this.isOkLoading = false;
         this.alertText = '获取钩子时出现错误:' + error.message;
       });
 
@@ -45,6 +49,7 @@ export class WebhookManageComponent implements OnInit {
   dismissModal = () => {
     this.isModalVisible = !this.isModalVisible;
     this.urlToDelete = '';
+    this.isCancelDisabled = false;
   }
 
   OkDeleteWebhook = () => {
@@ -80,6 +85,7 @@ export class WebhookManageComponent implements OnInit {
       .subscribe(res => {
         this.isOkLoading = false;
         this.isModalVisible = false;
+        this.isCancelDisabled = false;
         if (res.response.db.deletedCount === 0) {
           this.alertText = '未删除钩子';
           return;
