@@ -8,6 +8,7 @@ import {
   DashboardOutline,
   RetweetOutline,
   TwitterOutline,
+  UserOutline,
   CloudUploadOutline,
   DeleteOutline,
   ArrowLeftOutline,
@@ -16,7 +17,7 @@ import {
 
 const icons = [MenuFoldOutline, MenuUnfoldOutline,
   CloudUploadOutline, DeleteOutline, InfoCircleOutline,
-  ArrowLeftOutline,
+  ArrowLeftOutline, UserOutline,
   DashboardOutline, NodeExpandOutline, RetweetOutline, TwitterOutline];
 
 @NgModule({

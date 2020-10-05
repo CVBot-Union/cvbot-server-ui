@@ -1,1 +1,23 @@
-<p>rtgroup-manage works!</p>
+<h3>转推组管理</h3>
+<nz-alert *ngIf="alertText !== ''" nzBanner nzType="error" style="margin-bottom: 12px" [nzMessage]="alertText" nzCloseable></nz-alert>
+
+<nz-skeleton [nzActive]="true" *ngIf="isDetailLoading" ></nz-skeleton>
+
+<nz-list nzBordered *ngIf="!isDetailLoading">
+  <nz-list-item *ngFor="let group of rtgroupLists">
+    <nz-list-item-meta
+      [nzAvatar]="group.property.icon"
+    >
+      <nz-list-item-meta-title>{{group.name}}</nz-list-item-meta-title>
+    </nz-list-item-meta>
+    组员数: {{group.members.length}}, 组长数: {{group.leaders.length}}
+    <ul nz-list-item-actions>
+      <nz-list-item-action>
+        <button nz-button nzType="danger"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</button>
+      </nz-list-item-action>
+      <nz-list-item-action>
+        <a nz-button nzType="primary" routerLink="/rtgroup/group/manage/detail/{{group._id}}"><i nz-icon nzType="info-circle" nzTheme="outline"></i>详细</a>
+      </nz-list-item-action>
+    </ul>
+  </nz-list-item>
+</nz-list>

@@ -7,7 +7,7 @@ import { IconsProviderModule } from './icons-provider.module';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { zh_CN } from 'ng-zorro-antd/i18n';
@@ -41,6 +41,8 @@ import {NzEmptyModule} from 'ng-zorro-antd/empty';
 import {NzSwitchModule} from 'ng-zorro-antd/switch';
 import {NzPopconfirmModule} from 'ng-zorro-antd/popconfirm';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import {HttpconfigInterceptor} from './interceptor/httpconfig.interceptor';
+import { RtgroupDetailComponent } from './pages/rtgroup-detail/rtgroup-detail.component';
 
 registerLocaleData(zh);
 
@@ -54,7 +56,8 @@ registerLocaleData(zh);
     RtgroupManageComponent,
     RtgroupUserManageComponent,
     TrackerDetailComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    RtgroupDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -86,7 +89,11 @@ registerLocaleData(zh);
     NzSwitchModule,
     NzPopconfirmModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN }, NzModalService],
+  providers: [
+    { provide: NZ_I18N, useValue: zh_CN },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpconfigInterceptor, multi: true},
+    NzModalService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

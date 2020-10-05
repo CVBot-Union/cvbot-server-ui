@@ -1,1 +1,19 @@
-<p>rtgroup-user-manage works!</p>
+<h3>人员管理</h3>
+<nz-alert *ngIf="alertText !== ''" nzBanner nzType="error" style="margin-bottom: 12px" [nzMessage]="alertText" nzCloseable></nz-alert>
+<nz-skeleton [nzActive]="true" *ngIf="isDetailLoading" ></nz-skeleton>
+
+<nz-list nzBordered *ngIf="!isDetailLoading">
+  <nz-list-item *ngFor="let user of userLists">
+    <nz-list-item-meta>
+      <nz-list-item-meta-title>{{user.username}}</nz-list-item-meta-title>
+    </nz-list-item-meta>
+    <ul nz-list-item-actions>
+      <nz-list-item-action>
+        <button nz-button nzType="danger"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</button>
+      </nz-list-item-action>
+      <nz-list-item-action>
+        <a nz-button nzType="primary" routerLink="/rtgroup/group/manage/detail/"><i nz-icon nzType="info-circle" nzTheme="outline"></i>详细</a>
+      </nz-list-item-action>
+    </ul>
+  </nz-list-item>
+</nz-list>

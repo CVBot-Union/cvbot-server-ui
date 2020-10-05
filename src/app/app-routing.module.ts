@@ -8,6 +8,7 @@ import {RtgroupManageComponent} from './pages/rtgroup-manage/rtgroup-manage.comp
 import {RtgroupUserManageComponent} from './pages/rtgroup-user-manage/rtgroup-user-manage.component';
 import {TrackerDetailComponent} from './pages/tracker-detail/tracker-detail.component';
 import {NotFoundComponent} from './pages/not-found/not-found.component';
+import {RtgroupDetailComponent} from './pages/rtgroup-detail/rtgroup-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'welcome', pathMatch: 'full'},
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'tracker/manage', component: TrackerManageComponent},
   { path: 'tracker/manage/detail/:uid', component: TrackerDetailComponent},
   { path: 'rtgroup/group/manage', component: RtgroupManageComponent },
+  { path: 'rtgroup/group/manage/detail/:uid', component: RtgroupDetailComponent},
   { path: 'rtgroup/user/manage', component: RtgroupUserManageComponent},
   { path: '**', redirectTo: '404'}
 ];

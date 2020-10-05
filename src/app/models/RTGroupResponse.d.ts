@@ -4,15 +4,21 @@ export interface RTGroupDetail {
 }
 export interface Response {
   property: Property;
-  members?: (string)[] | null;
-  leaders?: (string)[] | null;
   _id: string;
+  members?: (MembersEntity)[] | null;
+  leaders?: (MembersEntity)[] | null;
   name: string;
   __v: number;
 }
 export interface Property {
   themeColor: string;
   icon: string;
+  description: string;
+}
+export interface MembersEntity {
+  dutyDescription: string;
+  _id: string;
+  id: string;
 }
 
 export interface AllRTGroup {
