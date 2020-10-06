@@ -129,6 +129,7 @@ export class TrackerManageComponent implements OnInit {
         this.isLookupDisabled = false;
         this.twitterUID = '';
         this.twitterUsername = '';
+        this.groupNickname = '';
         if (!this.isSaveGroupSelect){
           this.enteredQQGroups = [];
           this.selectedRTGroups = [];

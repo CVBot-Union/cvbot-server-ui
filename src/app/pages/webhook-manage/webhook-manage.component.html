@@ -8,7 +8,7 @@
     <input type="text" id="name" nz-input placeholder="名称" [(ngModel)]="webhookName" [disabled]="isOkLoading">
     <label for="webhook-url">上报地址</label>
     <input type="text" id="webhook-url" nz-input placeholder="https://webhook.com" [(ngModel)]="webhookURL" [disabled]="isOkLoading">
-    <button nz-button style="float: right" [nzLoading]="isOkLoading" [disabled]="isOkLoading" (click)="createWebhook()">创建</button>
+    <button nz-button style="float: right;margin-top: 16px;" [nzLoading]="isOkLoading" [disabled]="isOkLoading" (click)="createWebhook()">创建</button>
   </nz-input-group>
 
 </div>

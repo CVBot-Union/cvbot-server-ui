@@ -11,7 +11,7 @@ import {Subscription} from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  isCollapsed = false;
+  isCollapsed = true;
   isWholePageLinkActive = false;
   wholePageLink = ['/auth/login', '/404'];
   username = '用户';
@@ -81,6 +81,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subRouteChange();
     this.getUserInfo();
+    this.isCollapsed = true;
   }
 
   ngOnDestroy(): void {

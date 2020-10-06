@@ -21,8 +21,6 @@
         </nz-input-group>
       </nz-form-control>
     </nz-form-item>
-  </div>
-  <div nz-row>
     <nz-form-item nz-col nzSm="24" nzLg="12" nzGutter="8">
       <nz-form-label>所属组员</nz-form-label>
       <nz-form-control>
@@ -54,7 +52,7 @@
                [nzCheckedChildren]="checkedTemplate" [nzUnCheckedChildren]="unCheckedTemplate"></nz-switch>
   </div>
   <div style="float: right">
-    <button nz-button nzType="default"
+    <button nz-button nzType="default" style="margin-top: 16px;"
             (click)="onCreateRTGroup()"
             [disabled]="newRTGroupName === '' || isDetailLoading"
     >创建</button>
