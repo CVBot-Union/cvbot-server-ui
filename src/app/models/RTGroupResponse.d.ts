@@ -21,7 +21,30 @@ export interface MembersEntity {
   id: string;
 }
 
+export interface ExtendedMembersEntity {
+  dutyDescription: string;
+  username: string;
+  isInvalid: boolean;
+  _id: string;
+  id: string;
+}
+
 export interface AllRTGroup {
   success: boolean;
   response: Response[];
+}
+
+export interface DeleteRTGroup {
+  success: boolean;
+  response: DeleteRTGroupResponse;
+}
+export interface DeleteRTGroupResponse {
+  group: Response;
+  trackers: DeleteTrackers;
+}
+
+export interface DeleteTrackers {
+  n: number;
+  nModified: number;
+  ok: number;
 }

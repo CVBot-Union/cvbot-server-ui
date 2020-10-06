@@ -1,6 +1,68 @@
 <h3>转推组管理</h3>
 <nz-alert *ngIf="alertText !== ''" nzBanner nzType="error" style="margin-bottom: 12px" [nzMessage]="alertText" nzCloseable></nz-alert>
 
+<nz-divider nzText="添加"></nz-divider>
+
+<div nz-form>
+  <div nz-row>
+    <nz-form-item nz-col nzLg="12" nzSm="24" nzGutter="8">
+      <nz-form-label>转推组名称</nz-form-label>
+      <nz-form-control>
+        <nz-input-group>
+          <input type="text" nz-input [(ngModel)]="newRTGroupName">
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-col nzLg="12" nzSm="24" nzGutter="8">
+      <nz-form-label>转推组简介</nz-form-label>
+      <nz-form-control>
+        <nz-input-group>
+          <input type="text" nz-input [(ngModel)]="newRTGroupDescription">
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-row>
+    <nz-form-item nz-col nzSm="24" nzLg="12" nzGutter="8">
+      <nz-form-label>所属组员</nz-form-label>
+      <nz-form-control>
+        <nz-select
+          nzMode="multiple"
+          nzPlaceHolder="请选择"
+          [(ngModel)]="selectedMembers"
+        >
+          <nz-option *ngFor="let user of userLists" [nzLabel]="user.username" [nzValue]="user._id" ></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-col nzSm="24" nzLg="12" nzGutter="8">
+      <nz-form-label>所属组长</nz-form-label>
+      <nz-form-control>
+        <nz-select
+          nzMode="multiple"
+          nzPlaceHolder="请选择"
+          [(ngModel)]="selectedLeaders"
+        >
+          <nz-option *ngFor="let user of userLists" [nzLabel]="user.username" [nzValue]="user._id" ></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div>
+    <label for="saveGroupsFromLastTime">添加后存留组员与组长选项: </label>
+    <nz-switch id="saveGroupsFromLastTime" [(ngModel)]="isSaveMembersAndLeaders"
+               [nzCheckedChildren]="checkedTemplate" [nzUnCheckedChildren]="unCheckedTemplate"></nz-switch>
+  </div>
+  <div style="float: right">
+    <button nz-button nzType="default"
+            (click)="onCreateRTGroup()"
+            [disabled]="newRTGroupName === '' || isDetailLoading"
+    >创建</button>
+  </div>
+</div>
+
+<nz-divider nzText="管理"></nz-divider>
+
 <nz-skeleton [nzActive]="true" *ngIf="isDetailLoading" ></nz-skeleton>
 
 <nz-list nzBordered *ngIf="!isDetailLoading">
@@ -13,7 +75,11 @@
     组员数: {{group.members.length}}, 组长数: {{group.leaders.length}}
     <ul nz-list-item-actions>
       <nz-list-item-action>
-        <button nz-button nzType="danger"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</button>
+        <button nz-button
+                nz-popconfirm
+                (nzOnConfirm)="onDeleteRTGroup(group._id)"
+                [nzPopconfirmTitle]="'确认移除群' + group.name + '吗?'"
+                nzType="danger"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</button>
       </nz-list-item-action>
       <nz-list-item-action>
         <a nz-button nzType="primary" routerLink="/rtgroup/group/manage/detail/{{group._id}}"><i nz-icon nzType="info-circle" nzTheme="outline"></i>详细</a>
@@ -21,3 +87,8 @@
     </ul>
   </nz-list-item>
 </nz-list>
+
+<nz-empty *ngIf="rtgroupLists.length === 0 && !isDetailLoading"></nz-empty>
+
+<ng-template #checkedTemplate><i nz-icon nzType="check"></i></ng-template>
+<ng-template #unCheckedTemplate><i nz-icon nzType="close"></i></ng-template>

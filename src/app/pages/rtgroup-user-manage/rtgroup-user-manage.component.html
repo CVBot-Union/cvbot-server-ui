@@ -1,5 +1,37 @@
 <h3>人员管理</h3>
 <nz-alert *ngIf="alertText !== ''" nzBanner nzType="error" style="margin-bottom: 12px" [nzMessage]="alertText" nzCloseable></nz-alert>
+
+<nz-divider nzText="添加"></nz-divider>
+
+<div nz-form>
+  <div nz-row>
+    <nz-form-item nz-col nzLg="12" nzSm="24" nzGutter="8">
+      <nz-form-label>用户名</nz-form-label>
+      <nz-form-control>
+        <nz-input-group>
+          <input type="text" nz-input [(ngModel)]="username">
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-col nzLg="12" nzSm="24" nzGutter="8">
+      <nz-form-label>密码</nz-form-label>
+      <nz-form-control>
+        <nz-input-group [nzSuffix]="suffixTemplate">
+          <input [type]="isPasswordVisible ? 'text' : 'password'" nz-input placeholder="输入密码" [(ngModel)]="password" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div style="float: right">
+    <button nz-button nzType="primary"
+            [disabled]="username === '' || password === ''"
+            (click)="onCreateUser()"
+    >创建</button>
+  </div>
+</div>
+
+<nz-divider nzText="管理"></nz-divider>
+
 <nz-skeleton [nzActive]="true" *ngIf="isDetailLoading" ></nz-skeleton>
 
 <nz-list nzBordered *ngIf="!isDetailLoading">
@@ -9,11 +41,18 @@
     </nz-list-item-meta>
     <ul nz-list-item-actions>
       <nz-list-item-action>
-        <button nz-button nzType="danger"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</button>
-      </nz-list-item-action>
-      <nz-list-item-action>
-        <a nz-button nzType="primary" routerLink="/rtgroup/group/manage/detail/"><i nz-icon nzType="info-circle" nzTheme="outline"></i>详细</a>
+        <button nz-button
+                nz-popconfirm
+                (nzOnConfirm)="onDeleteUser(user._id)"
+                [nzPopconfirmTitle]="'确认移除群' + user.username + '吗?'"
+                nzType="danger"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</button>
       </nz-list-item-action>
     </ul>
   </nz-list-item>
 </nz-list>
+
+<nz-empty *ngIf="userLists.length === 0 && !isDetailLoading"></nz-empty>
+
+<ng-template #suffixTemplate>
+  <i nz-icon [nzType]="isPasswordVisible ? 'eye-invisible' : 'eye'" (click)="isPasswordVisible = !isPasswordVisible"></i>
+</ng-template>

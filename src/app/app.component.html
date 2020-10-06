@@ -1,4 +1,4 @@
-<nz-layout class="app-layout">
+<nz-layout class="app-layout" >
   <nz-sider class="menu-sidebar"
             nzCollapsible
             nzWidth="256px"
@@ -6,12 +6,13 @@
             [(nzCollapsed)]="isCollapsed"
             [nzTrigger]="null">
     <div class="sidebar-logo">
-      <a routerLink="/" target="_blank">
+      <div>
         <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo">
         <h1>转推工会</h1>
-      </a>
+      </div>
     </div>
-    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+    <span *ngIf="!isCollapsed" class="greeting" nz-typography>{{getLocalTimeGreeting()}}, {{username | slice:0:9}}</span>
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed" *ngIf="!isWholePageLinkActive">
       <li nz-submenu nzOpen nzTitle="面板" nzIcon="dashboard">
         <ul>
           <li nz-menu-item nzMatchRouter>
@@ -48,6 +49,11 @@
             <a routerLink="/webhook/history">触发历史</a>
           </li>
         </ul>
+      </li>
+
+      <li nz-menu-item (click)="onLogout()" >
+        <i nz-icon nzType="poweroff" nzTheme="outline" style="color: orangered"></i>
+        <a *ngIf="!isCollapsed" >注销</a>
       </li>
     </ul>
   </nz-sider>

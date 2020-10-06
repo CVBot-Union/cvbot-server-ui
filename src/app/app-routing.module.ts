@@ -9,9 +9,11 @@ import {RtgroupUserManageComponent} from './pages/rtgroup-user-manage/rtgroup-us
 import {TrackerDetailComponent} from './pages/tracker-detail/tracker-detail.component';
 import {NotFoundComponent} from './pages/not-found/not-found.component';
 import {RtgroupDetailComponent} from './pages/rtgroup-detail/rtgroup-detail.component';
+import {AuthLoginComponent} from './pages/auth-login/auth-login.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'welcome', pathMatch: 'full'},
+  { path: 'auth/login', component: AuthLoginComponent},
   { path: '404', component: NotFoundComponent},
   { path: 'welcome', component: WelcomeComponent},
   { path: 'webhook/manage', component: WebhookManageComponent},

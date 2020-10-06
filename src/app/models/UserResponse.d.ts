@@ -8,6 +8,11 @@ export interface BatchUsers {
   response: SlimResponse[];
 }
 
+export interface MetaUser {
+  success: boolean;
+  response: SlimResponse;
+}
+
 export interface SlimResponse {
   _id: string;
   username: string;
@@ -33,4 +38,17 @@ export interface SlimProperty {
   themeColor: string;
   icon: string;
   description: string;
+}
+
+export interface DeleteUser {
+  success: boolean;
+  response: DeleteUserResponse;
+}
+export interface DeleteUserResponse {
+  user: DeleteUserUser;
+}
+export interface DeleteUserUser {
+  n: number;
+  ok: number;
+  deletedCount: number;
 }
