@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TrackerService} from '../../services/tracker.service';
 import {ResponseEntity} from '../../models/TrackerResponse';
 import {LookupService} from '../../services/lookup.service';

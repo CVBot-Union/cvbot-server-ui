@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { WebhookHistoryComponent } from './webhook-history.component';
+import {WebhookHistoryComponent} from './webhook-history.component';
 
 describe('WebhookHistoryComponent', () => {
   let component: WebhookHistoryComponent;

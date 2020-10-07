@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MembersEntity, Response} from '../../models/RTGroupResponse';
 import {RtgroupService} from '../../services/rtgroup.service';
 import {UserService} from '../../services/user.service';
