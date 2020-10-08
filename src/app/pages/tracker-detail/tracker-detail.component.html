@@ -9,7 +9,7 @@
   <nz-descriptions-item nzTitle="Twitter名">
     <span nz-typography>{{trackerDetail.displayName}}</span>
   </nz-descriptions-item>
-  <nz-descriptions-item nzTitle="组内名">
+  <nz-descriptions-item nzTitle="全局组内名">
     <span nz-typography>{{trackerDetail.nickname}}</span>
     <button nz-button nzType="default" nzShape="circle" (click)="onNicknameEdit()"><i nz-icon nzType="edit"></i></button>
   </nz-descriptions-item>
@@ -25,7 +25,12 @@
           [nzAvatar]="rtgroup.property.icon"
         >
         </nz-list-item-meta>
-        <span nz-typography>{{ rtgroup.name }}</span>
+        <span>
+          <span>{{ rtgroup.name }}</span>
+          <span
+            *ngIf="rtgroup.trackerUsername !== '' && rtgroup.trackerUsername !== trackerDetail.nickname "
+            style="display: block">组内名:{{rtgroup.trackerUsername}}</span>
+        </span>
         <ul nz-list-item-actions>
           <nz-list-item-action>
             <button nz-button
@@ -35,6 +40,13 @@
                     [nzPopconfirmTitle]="'确认移除' + rtgroup.name + '吗?'" >
               <i nz-icon nzType="delete" nzTheme="outline"></i>
               删除</button>
+          </nz-list-item-action>
+          <nz-list-item-action>
+            <button nz-button
+                    (click)="onGroupNicknameEdit(rtgroup.trackerUsername, rtgroup._id)"
+                    nzType="primary">
+              <i nz-icon nzType="edit" nzTheme="outline"></i>
+              修改组内名</button>
           </nz-list-item-action>
         </ul>
       </nz-list-item>
@@ -136,4 +148,16 @@
   *ngIf="!isDetailLoading"
 >
   <input nz-input [(ngModel)]="newNickname">
+</nz-modal>
+
+<nz-modal
+  [(nzVisible)]="isChangeGroupNicknameVisible"
+  nzTitle="修改组"
+  (nzOnCancel)="dismissModal()"
+  (nzOnOk)="OkChangeGroupNickname()"
+  [nzOkLoading]="isOkLoading"
+  [nzCancelDisabled]="isCancelDisabled"
+  *ngIf="!isDetailLoading"
+>
+  <input nz-input [(ngModel)]="enteredGroupNickname">
 </nz-modal>

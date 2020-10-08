@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TrackerService} from '../../services/tracker.service';
-import {ResponseEntity} from '../../models/TrackerResponse';
+import {ResponseEntity, TrackerGroupEntity} from '../../models/TrackerResponse';
 import {LookupService} from '../../services/lookup.service';
 import {environment} from '../../../environments/environment';
 import {RtgroupService} from '../../services/rtgroup.service';
@@ -115,10 +115,17 @@ export class TrackerManageComponent implements OnInit {
   }
 
   onNewTrackerCreate = () => {
-    this.createNewTracker(this.twitterUID, this.twitterUsername, this.groupNickname, this.enteredQQGroups, this.selectedRTGroups);
+    const newGroups: TrackerGroupEntity[] = [];
+    this.selectedRTGroups.map(elm => {
+      newGroups.push({
+        id: elm,
+        nickname: this.groupNickname
+      });
+    });
+    this.createNewTracker(this.twitterUID, this.twitterUsername, this.groupNickname, this.enteredQQGroups, newGroups);
   }
 
-  private createNewTracker = (uid: string, displayName: string, nickname: string, qqGroups: string[], groups: string[]) => {
+  private createNewTracker = (uid: string, displayName: string, nickname: string, qqGroups: string[], groups: TrackerGroupEntity[]) => {
     this.alertText = '';
     this.isOkLoading = true;
     this.isLookupDisabled = true;

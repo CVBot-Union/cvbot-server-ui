@@ -46,6 +46,7 @@ export class RtgroupDetailComponent implements OnInit {
     name: false,
     description: false,
     color: false,
+    template: false
   };
 
   isCancelDisabled = false;

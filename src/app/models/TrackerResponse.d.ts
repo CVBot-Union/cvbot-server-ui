@@ -3,13 +3,18 @@ export interface Tracker {
   response?: (ResponseEntity)[] | null;
 }
 export interface ResponseEntity {
-  groups?: (string)[] | null;
+  groups?: (TrackerGroupEntity)[] | null;
   qqGroups?: (string | null)[] | null;
   _id: string;
   uid: string;
   displayName: string;
   nickname: string;
   __v: number;
+}
+
+export interface TrackerGroupEntity {
+  id: string;
+  nickname: string;
 }
 
 export interface TrackerDelete {
@@ -27,7 +32,7 @@ export interface NewTracker {
   response: NewTrackerResponse;
 }
 export interface NewTrackerResponse {
-  groups?: (string)[] | null;
+  groups?: (TrackerGroupEntity)[] | null;
   qqGroups?: (string)[] | null;
   _id: string;
   uid: string;

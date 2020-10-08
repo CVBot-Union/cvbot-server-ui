@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {NewTrackerResponse} from '../../models/TrackerResponse';
+import {NewTrackerResponse, TrackerGroupEntity} from '../../models/TrackerResponse';
 import {TrackerService} from '../../services/tracker.service';
 import {Response} from '../../models/RTGroupResponse';
 import {RtgroupService} from '../../services/rtgroup.service';
@@ -34,10 +34,13 @@ export class TrackerDetailComponent implements OnInit {
   isAddQQGroupModalVisible = false;
   isChangeNicknameModalVisible = false;
   isAddRTGroupModalVisible = false;
+  isChangeGroupNicknameVisible = false;
   isOkLoading = false;
   isCancelDisabled = false;
   selectedRTGroups: string[] = [];
   enteredQQGroups: string[] = [];
+  enteredGroupNickname = '';
+  targetGroupNicknameEdit = '';
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(param => {
@@ -51,7 +54,7 @@ export class TrackerDetailComponent implements OnInit {
   }
 
   onConfirmRemoveRTGroup = (groupID: string) => {
-    const idIdx = this.trackerDetail.groups.indexOf(groupID);
+    const idIdx = this.trackerDetail.groups.map(e => e.id).indexOf(groupID);
     if (idIdx < -1) {
       this.alertText = '无法找到转推组索引';
       return;
@@ -92,6 +95,7 @@ export class TrackerDetailComponent implements OnInit {
     this.isAddRTGroupModalVisible = false;
     this.isAddQQGroupModalVisible = false;
     this.isChangeNicknameModalVisible = false;
+    this.isChangeGroupNicknameVisible = false;
     this.newNickname = '';
     this.selectedRTGroups = [];
     this.enteredQQGroups = [];
@@ -110,12 +114,16 @@ export class TrackerDetailComponent implements OnInit {
       });
   }
 
-  private getRTGroupDetails = (rtgroupIDs: string[]) => {
+  private getRTGroupDetails = (rtgroups: TrackerGroupEntity[]) => {
     this.rtGroupDetails = [];
-    for (const id of rtgroupIDs) {
-      this.rtgroupService.getRTGroupByID(id)
+    for (const group of rtgroups) {
+      this.rtgroupService.getRTGroupByID(group.id)
         .subscribe(res => {
-          this.rtGroupDetails.push(res.response);
+          const nickIdx = this.trackerDetail.groups.map(e => e.id).indexOf(group.id);
+          this.rtGroupDetails.push({
+            trackerUsername: nickIdx > -1 ? this.trackerDetail.groups[nickIdx].nickname : '',
+            ...res.response
+          });
         });
     }
   }
@@ -148,6 +156,13 @@ export class TrackerDetailComponent implements OnInit {
     this.newNickname = this.trackerDetail.nickname;
   }
 
+  onGroupNicknameEdit = (currentNickname: string, targetGroupID: string) => {
+    this.isCancelDisabled = false;
+    this.isChangeGroupNicknameVisible = true;
+    this.enteredGroupNickname = currentNickname !== '' ? currentNickname : this.trackerDetail.nickname;
+    this.targetGroupNicknameEdit = targetGroupID;
+  }
+
   OkNicknameEdit = () => {
     this.trackerDetail.nickname = this.newNickname;
     this.updateTrackerInfo(this.trackerDetail);
@@ -160,10 +175,27 @@ export class TrackerDetailComponent implements OnInit {
     this.updateTrackerInfo(this.trackerDetail);
   }
 
+  OkChangeGroupNickname = () => {
+    const nickIdx = this.trackerDetail.groups.map(e => e.id).indexOf(this.targetGroupNicknameEdit);
+    if (nickIdx < -1) {
+      this.alertText = '无法找到转推组索引';
+      return;
+    }
+    this.trackerDetail.groups[nickIdx].nickname = this.enteredGroupNickname;
+    this.enteredGroupNickname = '';
+    this.updateTrackerInfo(this.trackerDetail);
+  }
+
   OkAddRTGroups = () => {
-    this.trackerDetail.groups = this.selectedRTGroups.concat(this.trackerDetail.groups.filter(item =>
-      this.selectedRTGroups.indexOf(item) < 0
-    ));
+    const groupArray: TrackerGroupEntity[] = [];
+    this.selectedRTGroups.map(elm => {
+      if (this.trackerDetail.groups.map(e => e.id).indexOf(elm) < 0) {
+        groupArray.push({
+          id: elm, nickname: this.trackerDetail.nickname
+        });
+      }
+    });
+    this.trackerDetail.groups = this.trackerDetail.groups.concat(groupArray);
     this.updateTrackerInfo(this.trackerDetail);
   }
 

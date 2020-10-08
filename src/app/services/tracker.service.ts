@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {NewTracker, NewTrackerResponse, Tracker, TrackerDelete} from '../models/TrackerResponse';
+import {NewTracker, NewTrackerResponse, Tracker, TrackerDelete, TrackerGroupEntity} from '../models/TrackerResponse';
 import {Observable} from 'rxjs';
 
 @Injectable({
@@ -25,7 +25,8 @@ export class TrackerService {
     return this.http.request<TrackerDelete>('delete', environment.apiBase + '/tracker/', { body: { uid } });
   }
 
-  createNewTracker = (uid: string, displayName: string, nickname: string, qqGroups: string[], groups: string[]): Observable<NewTracker> => {
+  createNewTracker = (uid: string, displayName: string, nickname: string, qqGroups: string[], groups: TrackerGroupEntity[])
+    : Observable<NewTracker> => {
     return this.http.post<NewTracker>(environment.apiBase + '/tracker/', {
       uid, displayName, nickname, qqGroups, groups
     });

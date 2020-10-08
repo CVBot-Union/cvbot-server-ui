@@ -71,6 +71,26 @@
   </nz-descriptions-item>
 </nz-descriptions>
 
+<nz-descriptions nzBordered *ngIf="!isDetailLoading && !isGroupNotFound">
+  <nz-descriptions-item nzTitle="推文模板" [nzSpan]="1">
+    <div *ngIf="!infoEditing.template">
+      <span>{{rtGroupDetail.property.templateFormat}}</span>
+      <button class="edit-button" nz-button
+              (click)="infoEditing.template = !infoEditing.template"
+              nzType="default" nzShape="circle"><i nz-icon nzType="edit"></i></button>
+    </div>
+    <div *ngIf="infoEditing.template">
+      <textarea style="resize: none" nz-input rows="4" [(ngModel)]="rtGroupDetail.property.templateFormat"></textarea>
+      <button nz-button
+              (click)="onChangeGroupInfo(); infoEditing.template = !infoEditing.template"
+              nzType="primary" nzShape="circle"><i nz-icon nzType="check"></i></button>
+      <button nz-button
+              (click)="infoEditing.template = !infoEditing.template"
+              nzType="default" nzShape="circle"><i nz-icon nzType="close"></i></button>
+    </div>
+  </nz-descriptions-item>
+</nz-descriptions>
+
 <nz-divider></nz-divider>
 
 <div nz-row *ngIf="!isDetailLoading" nzAlign="top" [nzGutter]="8">

@@ -9,11 +9,14 @@ export interface Response {
   leaders?: (MembersEntity)[] | null;
   name: string;
   __v: number;
+  trackerUsername?: string;
 }
+
 export interface Property {
   themeColor: string;
   icon: string;
   description: string;
+  templateFormat: string;
 }
 export interface MembersEntity {
   dutyDescription: string;
