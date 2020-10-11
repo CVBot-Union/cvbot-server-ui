@@ -15,7 +15,6 @@ import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import {WelcomeComponent} from './pages/welcome/welcome.component';
 import { WebhookManageComponent } from './pages/webhook-manage/webhook-manage.component';
-import { WebhookHistoryComponent } from './pages/webhook-history/webhook-history.component';
 import { TrackerManageComponent } from './pages/tracker-manage/tracker-manage.component';
 import {NzListModule} from 'ng-zorro-antd/list';
 import {NzAlertModule} from 'ng-zorro-antd/alert';
@@ -49,6 +48,8 @@ import {NzSpinModule} from 'ng-zorro-antd/spin';
 import {NzDescriptionsModule} from 'ng-zorro-antd/descriptions';
 import {NzUploadModule} from 'ng-zorro-antd/upload';
 import {ColorPickerModule} from 'ngx-color-picker';
+import { WorkerManageComponent } from './pages/worker-manage/worker-manage.component';
+import {NzProgressModule} from 'ng-zorro-antd/progress';
 
 registerLocaleData(zh);
 
@@ -57,14 +58,14 @@ registerLocaleData(zh);
     AppComponent,
     WelcomeComponent,
     WebhookManageComponent,
-    WebhookHistoryComponent,
     TrackerManageComponent,
     RtgroupManageComponent,
     RtgroupUserManageComponent,
     TrackerDetailComponent,
     NotFoundComponent,
     RtgroupDetailComponent,
-    AuthLoginComponent
+    AuthLoginComponent,
+    WorkerManageComponent
   ],
   imports: [
     BrowserModule,
@@ -100,7 +101,8 @@ registerLocaleData(zh);
     NzSpinModule,
     NzDescriptionsModule,
     NzUploadModule,
-    ColorPickerModule
+    ColorPickerModule,
+    NzProgressModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: zh_CN },
