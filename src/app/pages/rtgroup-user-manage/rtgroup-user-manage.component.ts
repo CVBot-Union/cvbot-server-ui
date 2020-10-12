@@ -21,6 +21,7 @@ export class RtgroupUserManageComponent implements OnInit {
   isPosting = false;
   alertText = '';
   userLists: SlimResponse[] = [];
+  currentUserID = localStorage.getItem('uid');
 
   username = '';
   password: '';

@@ -58,7 +58,9 @@ export class AuthLoginComponent implements OnInit {
         this.isAuthorizing = false;
         if (res.response.token) {
           localStorage.setItem('token', res.response.token);
+          localStorage.setItem('uid', res.response.uid);
           this.router.navigate(['']);
+          window.location.replace('');
         }
       }, error => {
         this.isAuthorizing = false;

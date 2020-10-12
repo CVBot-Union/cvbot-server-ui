@@ -15,7 +15,7 @@
     <button
       nz-button
       nzType="default"
-      [disabled]="workerStatus === 'RUNNING'"
+      [disabled]="workerStatus === 'RUNNING' || workerStatus === 'UNKNOWN'"
       (click)="onStart()"
     >启动</button>
     <button

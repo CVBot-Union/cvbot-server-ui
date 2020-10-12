@@ -15,6 +15,7 @@ export class AppComponent implements OnInit, OnDestroy {
   isWholePageLinkActive = false;
   wholePageLink = ['/auth/login', '/404'];
   username = '用户';
+  isProjectAdmin = false;
 
   routerSub: Subscription;
 
@@ -65,6 +66,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.userService.getCurrentUserDetail()
       .subscribe(res => {
         this.username = res.response.user.username;
+        this.isProjectAdmin = res.response.user.userLevel === 1;
       }, error => {
         this.messageService.error('获取登陆状态错误, 请登录');
         if (error.status === 401 || error.status === 403){

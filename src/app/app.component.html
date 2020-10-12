@@ -30,7 +30,7 @@
         </ul>
       </li>
 
-      <li nz-submenu nzOpen nzTitle="转推组" nzIcon="retweet">
+      <li nz-submenu nzOpen nzTitle="转推组" nzIcon="retweet" *ngIf="isProjectAdmin">
         <ul>
           <li nz-menu-item nzMatchRouter>
             <a routerLink="/rtgroup/group/manage">组管理</a>
@@ -41,7 +41,7 @@
         </ul>
       </li>
 
-      <li nz-submenu nzOpen nzTitle="Worker管理" nzIcon="node-expand">
+      <li nz-submenu nzOpen nzTitle="Worker管理" nzIcon="node-expand" *ngIf="isProjectAdmin">
         <ul>
           <li nz-menu-item nzMatchRouter>
             <a routerLink="/webhook/manage">钩子管理</a>
