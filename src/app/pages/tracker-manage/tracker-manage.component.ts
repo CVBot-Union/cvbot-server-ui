@@ -51,7 +51,7 @@ export class TrackerManageComponent implements OnInit {
   }
 
   getTwitterAvatar = (uid: string): string => {
-    return environment.apiBase + '/lookup/avatar/id/' + uid;
+    return environment.apiBase + '/lookup/avatar/id/' + uid + '.png';
   }
 
   dismissModal = () => {

@@ -1,1 +1,20 @@
-<p>欢迎</p>
+<h2 style="text-align: center">欢迎来到转推工会</h2>
+<div>
+  <nz-row [nzGutter]="16">
+    <nz-col [nzSpan]="12">
+      <nz-statistic [nzValue]="(statInfo.tweetCount | number)!" nzTitle="总计推文"></nz-statistic>
+    </nz-col>
+    <nz-col [nzSpan]="12">
+      <nz-statistic [nzValue]="(statInfo.trackerCount | number)!" nzTitle="总计转推用户"></nz-statistic>
+    </nz-col>
+  </nz-row>
+  <nz-row [nzGutter]="16">
+    <nz-col [nzSpan]="12">
+      <nz-statistic [nzValue]="(statInfo.rtgroupCount | number)!" nzTitle="总计转推组"></nz-statistic>
+    </nz-col>
+    <nz-col [nzSpan]="12">
+      <nz-statistic [nzValue]="(statInfo.userCount | number)!" nzTitle="总计转推组用户"></nz-statistic>
+    </nz-col>
+  </nz-row>
+
+</div>
