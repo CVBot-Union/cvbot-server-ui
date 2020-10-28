@@ -6,7 +6,6 @@ export interface Response {
   property: Property;
   _id: string;
   members?: (MembersEntity)[] | null;
-  leaders?: (MembersEntity)[] | null;
   name: string;
   __v: number;
   trackerUsername?: string;
@@ -19,9 +18,11 @@ export interface Property {
   templateFormat: string;
 }
 export interface MembersEntity {
-  dutyDescription: string;
+  job: string;
   _id: string;
   id: string;
+  username: string | null;
+  isManager: boolean;
 }
 
 export interface ExtendedMembersEntity {

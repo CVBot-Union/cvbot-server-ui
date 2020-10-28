@@ -39,7 +39,7 @@
   <nz-list-item *ngFor="let user of userLists">
     <nz-list-item-meta>
       <nz-list-item-meta-title>{{user.username}}</nz-list-item-meta-title>
-      <nz-list-item-meta-description>{{user.userLevel > 0 ? '管理' : '用户' }}</nz-list-item-meta-description>
+      <nz-list-item-meta-description>{{user.isManager ? '管理' : '用户' }}</nz-list-item-meta-description>
     </nz-list-item-meta>
     <ul nz-list-item-actions>
       <nz-list-item-action>

@@ -75,8 +75,7 @@ export class RtgroupUserManageComponent implements OnInit {
           return;
         }
         this.notificationService.success(
-          '删除成功',
-          '请前往转推组管理内清理用户遗留'
+          '删除成功', ''
         );
         this.fetchAllUsers();
       }, error => {

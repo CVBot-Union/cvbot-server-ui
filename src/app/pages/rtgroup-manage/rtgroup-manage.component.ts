@@ -73,23 +73,24 @@ export class RtgroupManageComponent implements OnInit {
 
   onCreateRTGroup = () => {
     const remappedMembers = this.remapQuickAddUser(this.selectedMembers);
-    const remappedLeaders = this.remapQuickAddUser(this.selectedLeaders);
-    this.createRTGroup(this.newRTGroupName, this.newRTGroupDescription, remappedMembers, remappedLeaders);
+    const remappedLeaders = this.remapQuickAddUser(this.selectedLeaders, true);
+    const mergedArray = [...remappedLeaders, ...remappedMembers];
+    this.createRTGroup(this.newRTGroupName, this.newRTGroupDescription, mergedArray);
   }
 
-  private remapQuickAddUser = (idArray: string[]): MembersEntity[] => {
+  private remapQuickAddUser = (idArray: string[], isLeader = false): MembersEntity[] => {
     const remappedArray = [];
     for (const id of idArray) {
       remappedArray.push({
-        id, dutyDescription: '用户'
+        id, dutyDescription: '用户', isManager: isLeader
       });
     }
     return remappedArray;
   }
 
-  private createRTGroup = (name: string, description: string, members: MembersEntity[], leaders: MembersEntity[]) => {
+  private createRTGroup = (name: string, description: string, members: MembersEntity[]) => {
     this.isDetailLoading = true;
-    this.rtgroupService.createRTGroup(name, description, members, leaders)
+    this.rtgroupService.createRTGroup(name, description, members)
       .subscribe(res => {
         this.isDetailLoading = false;
         this.newRTGroupName = '';

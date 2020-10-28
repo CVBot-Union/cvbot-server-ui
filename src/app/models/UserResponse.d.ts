@@ -16,7 +16,7 @@ export interface MetaUser {
 export interface SlimResponse {
   _id: string;
   username: string;
-  userLevel: number;
+  isManager: number;
 }
 
 export interface Response {

@@ -21,10 +21,10 @@ export class RtgroupService {
     return this.http.get<RTGroupDetail>(environment.apiBase + '/rtgroup/' + id);
   }
 
-  createRTGroup = (name: string, description: string, members: MembersEntity[], leaders: MembersEntity[])
+  createRTGroup = (name: string, description: string, members: MembersEntity[])
     : Observable<RTGroupDetail> => {
     return this.http.post<RTGroupDetail>(environment.apiBase + '/rtgroup/', {
-      name, description, members, leaders
+      name, description, members
     });
   }
 

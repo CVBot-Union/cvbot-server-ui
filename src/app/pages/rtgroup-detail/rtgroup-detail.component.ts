@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RtgroupService} from '../../services/rtgroup.service';
 import {UserService} from '../../services/user.service';
-import {ExtendedMembersEntity, MembersEntity, Response} from '../../models/RTGroupResponse';
+import {MembersEntity, Response} from '../../models/RTGroupResponse';
 import {SlimResponse} from '../../models/UserResponse';
 import {environment} from '../../../environments/environment';
 import {NzUploadChangeParam, NzUploadFile} from 'ng-zorro-antd/upload';
@@ -56,8 +56,8 @@ export class RtgroupDetailComponent implements OnInit {
   selectedJoinType = this.availableJoinType[0].value;
   userDutyDescription = '';
 
-  membersList: ExtendedMembersEntity[] = [];
-  leadersList: ExtendedMembersEntity[] = [];
+  membersList: MembersEntity[] = [];
+  leadersList: MembersEntity[] = [];
   invalidUserIDs: string[] = [];
 
   ngOnInit(): void {
@@ -115,12 +115,12 @@ export class RtgroupDetailComponent implements OnInit {
   }
 
   onRemoveLeaders = (id: string) => {
-    const idIdx = this.rtGroupDetail.leaders.map(e => e.id).indexOf(id);
+    const idIdx = this.rtGroupDetail.members.map(e => e.id).indexOf(id);
     if (idIdx < -1) {
       this.alertText = '无法找到组长索引';
       return;
     }
-    this.rtGroupDetail.leaders.splice(idIdx, 1);
+    this.rtGroupDetail.members.splice(idIdx, 1);
     this.updateRTGroupInfo(this.rtGroupDetail);
   }
 
@@ -134,25 +134,20 @@ export class RtgroupDetailComponent implements OnInit {
     }
     const builtUser: MembersEntity = {
       _id: undefined,
-      dutyDescription: this.userDutyDescription,
-      id: this.selectedUser
+      job: this.userDutyDescription,
+      username: undefined,
+      id: this.selectedUser,
+      isManager: this.selectedJoinType === 'leader'
     };
-    switch (this.selectedJoinType){
-      case 'leader':
-        this.rtGroupDetail.leaders = this.mergeNewUser(builtUser, this.rtGroupDetail.leaders);
-        break;
-      case 'member':
-        this.rtGroupDetail.members = this.mergeNewUser(builtUser, this.rtGroupDetail.members);
-        break;
-      default:
-        break;
-    }
+    this.rtGroupDetail.members = this.mergeNewUser(builtUser, this.rtGroupDetail.members);
     this.updateRTGroupInfo(this.rtGroupDetail);
   }
 
   private mergeNewUser = (newMember: MembersEntity, targetMemberList: MembersEntity[]): MembersEntity[] => {
     const idIdx = targetMemberList.map(e => e.id).indexOf(newMember.id);
     if (idIdx === -1) {
+      targetMemberList.push(newMember);
+    }else if (idIdx > -1 && (targetMemberList[idIdx].isManager !== newMember.isManager)) {
       targetMemberList.push(newMember);
     }
     return targetMemberList;
@@ -189,15 +184,13 @@ export class RtgroupDetailComponent implements OnInit {
   }
 
   private fetchGroupDetail = (id: string) => {
-    this.membersList = [];
-    this.leadersList = [];
     this.isDetailLoading = true;
     this.rtgroupService.getRTGroupByID(id)
       .subscribe(res => {
         this.isDetailLoading = false;
         this.rtGroupDetail = res.response;
         this.buildUsersMeta(this.rtGroupDetail.members, 'member');
-        this.buildUsersMeta(this.rtGroupDetail.leaders, 'leader');
+        this.buildUsersMeta(this.rtGroupDetail.members, 'leader');
       }, error => {
         this.isDetailLoading = false;
         this.isGroupNotFound = true;
@@ -206,41 +199,11 @@ export class RtgroupDetailComponent implements OnInit {
   }
 
   private buildUsersMeta = (userIDs: MembersEntity[], type: 'member' | 'leader') => {
-    userIDs.map(elm => {
-      this.userService.getUserMetaByID(elm.id)
-        .subscribe(res => {
-          switch (type){
-            case 'leader':
-              this.leadersList.push({
-                ...elm, username: res.response.username, isInvalid: false
-              });
-              break;
-            case 'member':
-              this.membersList.push({
-                ...elm, username: res.response.username, isInvalid: false
-              });
-              break;
-            default:
-              break;
-          }
-        }, error => {
-          switch (type){
-            case 'leader':
-              this.leadersList.push({
-                ...elm, username: '失效', isInvalid: false
-              });
-              break;
-            case 'member':
-              this.membersList.push({
-                ...elm, username: '失效', isInvalid: false
-              });
-              break;
-            default:
-              break;
-          }
-          this.invalidUserIDs.push(elm.id);
-        });
-    });
+    if (type === 'member') {
+      this.membersList = userIDs.filter(e => !e.isManager);
+    }else {
+      this.leadersList = userIDs.filter(e => e.isManager);
+    }
   }
 
 }
