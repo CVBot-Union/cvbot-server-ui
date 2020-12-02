@@ -22,7 +22,7 @@
         </ul>
       </li>
 
-      <li nz-submenu nzOpen nzTitle="推特用户" nzIcon="twitter">
+      <li nz-submenu nzOpen nzTitle="推特用户" nzIcon="twitter" *ngIf="isProjectAdmin">
         <ul>
           <li nz-menu-item nzMatchRouter>
             <a routerLink="/tracker/manage">追踪管理</a>

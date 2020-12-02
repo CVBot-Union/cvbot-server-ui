@@ -28,6 +28,7 @@ export interface User {
   userLevel: number;
   _id: string;
   username: string;
+  isManager: boolean;
   __v: number;
 }
 export interface SlimRtgroupsEntity {

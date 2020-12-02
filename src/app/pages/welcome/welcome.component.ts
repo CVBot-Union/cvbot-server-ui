@@ -11,10 +11,10 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 export class WelcomeComponent implements OnInit {
 
   statInfo: StatResponse = {
-    trackerCount: Math.floor(Math.random() * 1000),
-    tweetCount: Math.floor(Math.random() * 1000),
-    rtgroupCount: Math.floor(Math.random() * 1000),
-    userCount: Math.floor(Math.random() * 1000)
+    trackerCount: -1,
+    tweetCount: -1,
+    rtgroupCount: -1,
+    userCount: -1
   };
 
   constructor(
